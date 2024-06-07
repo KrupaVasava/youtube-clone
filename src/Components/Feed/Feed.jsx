@@ -14,7 +14,7 @@ const Feed = () => {
   return (
 
     <div className="feed">
-        <Link to={`vieo/20/4521`} className='card'>
+        <Link to={`video/20/4521`} className='card'>
             <img src={thumbnail1} alt=""/>
             <h2>Best Channel to learn coding that help you to be a Web Developer</h2>
             <h3>Greatstack</h3>
