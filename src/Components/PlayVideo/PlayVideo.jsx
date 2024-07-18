@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './PlayVideo.css'
 import video1 from '../../assets/video.mp4'
 import like from '../../assets/like.png'
@@ -8,6 +8,7 @@ import save from '../../assets/save.png'
 import jack from '../../assets/jack.png'
 import user_profile from '../../assets/user_profile.jpg'
 import { API_KEY } from '../../data'
+import moment from 'moment'
 
 const PlayVideo = (videoId) => {
 
@@ -16,16 +17,20 @@ const PlayVideo = (videoId) => {
   const fetchVideoData = async () =>{
     //fetching videos data
     const videoDetails_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${API_KEY}`
-    await fetch(videoDetails_url).then(res=>res.json()).then()
+    await fetch(videoDetails_url).then(res=>res.json()).then(data => setApiData(data.items[0]))
   }
+
+  useEffect(()=>{
+    fetchVideoData();
+  },[])
 
   return (
     <div className='play-video'>
        {/* <video src={video1} controls autoplay muted></video> */}
        <iframe  src={`https://www.youtube.com/embed/${videoId}?autoplay=1`} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-       <h3>Best Youtube Channel To Learn Web Development</h3>
+       <h3>{apiData?apiData.snippet.title:"Title Here"}</h3>
           <div className="play-video-info">
-            <p>1525 VIews &bull; 2 days ago</p>
+          <p>{apiData?value_converter(apiData.statistics.viewCount):"16K"} VIews &bull; {moment(apiData.snippet.publishedAt).fromNow()}</p>
             <div>
               <span><img src={like} alt="" /> 125</span>
               <span><img src={dislike} alt="" /> 2</span>
